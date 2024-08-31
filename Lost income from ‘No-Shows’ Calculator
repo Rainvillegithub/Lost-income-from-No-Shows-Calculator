@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lost Income Due to No-Shows Calculator</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            background-color: #f4f4f4;
+        }
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+        .calculator {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        label {
+            display: block;
+            margin-bottom: 10px;
+            color: #333;
+        }
+        input[type="number"] {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 20px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            box-sizing: border-box;
+        }
+        button {
+            width: 100%;
+            padding: 10px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        #result {
+            margin-top: 20px;
+            padding: 15px;
+            background-color: #d4edda;
+            border-left: 5px solid #28a745;
+            border-radius: 5px;
+            font-size: 18px;
+            display: none;
+        }
+        .cta {
+            margin-top: 20px;
+            padding: 15px;
+            background-color: #f8d7da;
+            border-left: 5px solid #dc3545;
+            border-radius: 5px;
+            font-size: 16px;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Lost Income Due to No-Shows Calculator</h1>
+
+    <div class="calculator">
+        <label for="scheduledPatients">Total Patients Scheduled:</label>
+        <input type="number" id="scheduledPatients" placeholder="Enter total patients scheduled" min="0">
+
+        <label for="arrivedPatients">Total Patients Arrived:</label>
+        <input type="number" id="arrivedPatients" placeholder="Enter total patients arrived" min="0">
+
+        <label for="grossBillings">Gross Billings ($):</label>
+        <input type="number" id="grossBillings" placeholder="Enter gross billings" min="0">
+
+        <button onclick="calculateLostIncome()">Calculate</button>
+
+        <div id="result">
+            <p id="arrivalPercentage"></p>
+            <p id="averageBillingPerVisit"></p>
+            <p id="lostIncome"></p>
+            <p id="reportText"></p>
+        </div>
+    </div>
+
+    <div class="cta">
+        <p>👋 Enhance Your Practice👋</p>
+        <p>👋 Enrich Your Life👋</p>
+    </div>
+
+    <script>
+    function calculateLostIncome() {
+        var scheduledPatients = parseFloat(document.getElementById('scheduledPatients').value);
+        var arrivedPatients = parseFloat(document.getElementById('arrivedPatients').value);
+        var grossBillings = parseFloat(document.getElementById('grossBillings').value);
+
+        if (scheduledPatients > 0 && arrivedPatients >= 0 && arrivedPatients <= scheduledPatients && grossBillings > 0) {
+            var noShowPatients = scheduledPatients - arrivedPatients;
+            var arrivalPercentage = (arrivedPatients / scheduledPatients) * 100;
+            var averageBillingPerVisit = grossBillings / arrivedPatients;
+            var totalLostIncome = noShowPatients * averageBillingPerVisit;
+
+            document.getElementById('arrivalPercentage').innerText = "Percentage of Arrivals: " + arrivalPercentage.toFixed(2) + "%";
+            document.getElementById('averageBillingPerVisit').innerText = "Average Billing Per Patient Visit: $" + averageBillingPerVisit.toFixed(2);
+            document.getElementById('lostIncome').innerText = "Total Lost Income Due to No-Shows: $" + totalLostIncome.toFixed(2);
+
+            var reportText = "Based on your current schedule:\n";
+            reportText += "You had " + noShowPatients.toFixed(2) + " no-shows, which accounts for " + (100 - arrivalPercentage).toFixed(2) + "% of your scheduled patients.\n";
+            reportText += "With an average billing rate of $" + averageBillingPerVisit.toFixed(2) + " per patient visit, this resulted in a total of $" + totalLostIncome.toFixed(2) + " in lost income due to no-shows.\n";
+
+            document.getElementById('reportText').innerText = reportText;
+            document.getElementById('result').style.display = 'block';
+
+            // Call to action
+            var ctaText = "Looking to reduce no-shows and optimize your practice? ";
+            ctaText += "Contact us today for a personalized consultation. ";
+            ctaText += "We can help you enhance your practice, boost profitability, and enrich your professional life.";
+            document.querySelector('.cta').innerHTML = `<p>👋 Enhance Your Practice👋</p><p>${ctaText}</p><p>👋 Enrich Your Life👋</p>`;
+        } else {
+            alert("Please enter valid numbers for scheduled patients, arrived patients, and gross billings.");
+        }
+    }
+    </script>
+
+</body>
+</html>
